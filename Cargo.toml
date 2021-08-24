@@ -19,7 +19,6 @@ cortex-m-rt-ld = "0.1.1"
 version = "0.4.0"
 features = ["stm32f103", "rt"]
 
-
 [profile.release]
 # optimize for size ('z' would optimize even more)
 opt-level = 's'

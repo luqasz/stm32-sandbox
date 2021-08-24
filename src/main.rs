@@ -1,12 +1,24 @@
-#![no_std]
-#![no_main]
-
+#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(test), no_main)]
+#![cfg(not(test))]
 extern crate panic_halt;
 
 use cortex_m_rt::entry;
 use embedded_hal::digital::v2::OutputPin;
 use nb::block;
 use stm32f1xx_hal::{pac, prelude::*, timer::Timer};
+
+pub fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+#[cfg(test)]
+mod test {
+    #[test]
+    fn test_add() {
+        assert_eq!(add(1, 2), 3);
+    }
+}
 
 #[entry]
 fn main() -> ! {
@@ -37,8 +49,8 @@ fn main() -> ! {
     // Wait for the timer to trigger an update and change the state of the LED
     loop {
         block!(timer.wait()).unwrap();
-        led.set_high();
+        led.set_high().unwrap();
         block!(timer.wait()).unwrap();
-        led.set_low();
+        led.set_low().unwrap();
     }
 }
