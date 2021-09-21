@@ -1,6 +1,7 @@
 #![cfg_attr(not(test), no_std)]
 #![cfg_attr(not(test), no_main)]
-#![cfg(not(test))]
+
+#[cfg(not(test))]
 extern crate panic_halt;
 
 use cortex_m_rt::entry;
@@ -14,13 +15,14 @@ pub fn add(a: i32, b: i32) -> i32 {
 
 #[cfg(test)]
 mod test {
+    use super::*;
     #[test]
     fn test_add() {
         assert_eq!(add(1, 2), 3);
     }
 }
 
-#[entry]
+#[cfg_attr(not(test), entry)]
 fn main() -> ! {
     // Get access to the core peripherals from the cortex-m crate
     let cp = cortex_m::Peripherals::take().unwrap();
